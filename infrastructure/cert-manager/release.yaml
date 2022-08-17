@@ -1,0 +1,75 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: cert-manager
+spec:
+  releaseName: cert-manager
+  maxHistory: 3
+  interval: 5m
+  chart:
+    spec:
+      chart: cert-manager
+      version: "v1.9.1"
+      sourceRef:
+        kind: HelmRepository
+        name: jetstack-charts
+        namespace: cert-manager
+      interval: 5m
+  values:
+    installCRDs: true
+    global:
+      leaderElection:
+        namespace: cert-manager
+
+    extraArgs:
+      - --dns01-recursive-nameservers-only
+      - --dns01-recursive-nameservers=1.1.1.1:53
+
+    #prometheus:
+    #  servicemonitor:
+    #    enabled: true
+
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 256Mi
+      requests:
+        cpu: 10m
+        memory: 64Mi
+
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop: ["ALL"]
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+
+    cainjector:
+      containerSecurityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop: ["ALL"]
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
+      resources:
+        limits:
+          cpu: 1000m
+          memory: 256Mi
+        requests:
+          cpu: 10m
+          memory: 64Mi
+
+    webhook:
+      containerSecurityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop: ["ALL"]
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
+      resources:
+        limits:
+          cpu: 1000m
+          memory: 128Mi
+        requests:
+          cpu: 10m
+          memory: 16Mi
