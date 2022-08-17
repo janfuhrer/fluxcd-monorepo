@@ -4,7 +4,7 @@ metadata:
   name: cert-manager
   namespace: flux-system
 spec:
-  path: ./infrastructure/cert-manager
+  path: ./infrastructure/clusters/prod/cert-manager
   targetNamespace: cert-manager
   prune: true
   interval: 10m0s
