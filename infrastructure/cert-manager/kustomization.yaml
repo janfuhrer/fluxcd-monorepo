@@ -5,4 +5,4 @@ resources:
 - repository.yaml
 - ns.yaml
 patchesStrategicMerge:
-- ../../clusters/${cluster_name}/infrastructure/cert-manager/patch.yaml
+- "../../clusters/${cluster_name}/infrastructure/cert-manager/patch.yaml"
