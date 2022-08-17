@@ -14,7 +14,7 @@ spec:
         kind: HelmRepository
         name: jetstack-charts
         namespace: cert-manager
-      interval: 5m
+      interval: 5m0s
   values:
     installCRDs: true
     global:
@@ -24,10 +24,6 @@ spec:
     extraArgs:
       - --dns01-recursive-nameservers-only
       - --dns01-recursive-nameservers=1.1.1.1:53
-
-    prometheus:
-      servicemonitor:
-        enabled: true
 
     resources:
       limits:

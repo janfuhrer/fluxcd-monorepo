@@ -1,10 +1,10 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
-  name: cert-manager
+  name: ingress-nginx
 spec:
-  path: ./infrastructure/clusters/prod/cert-manager
-  targetNamespace: cert-manager
+  path: ./infrastructure/clusters/prod/ingress-nginx
+  targetNamespace: ingress
   prune: true
   interval: 5m0s
   sourceRef:
