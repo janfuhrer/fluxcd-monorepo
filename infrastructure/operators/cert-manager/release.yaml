@@ -5,7 +5,7 @@ metadata:
 spec:
   releaseName: cert-manager
   maxHistory: 3
-  interval: 5m
+  interval: 5m0s
   chart:
     spec:
       chart: cert-manager
