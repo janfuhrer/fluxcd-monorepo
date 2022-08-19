@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      #- name: Setup tools
-      #  uses: ./.github/actions/tools
+      - name: Setup tools
+        uses: ./.github/actions/tools
       - name: Validate manifests
         run: ./scripts/validate.sh
