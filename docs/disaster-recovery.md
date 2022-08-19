@@ -23,6 +23,7 @@ kubectl create secret generic sops-age-flux-global-prod \
 ```
 
 3. Bootstrap flux
+
 ```bash
 flux bootstrap git -s \
 --url=ssh://git@github.com/janfuhrer/fluxcd-monorepo \
@@ -35,3 +36,11 @@ flux bootstrap git -s \
 4. Take a :coffee: and wait until flux has finished it's work
 
 5. Restore apllication data
+
+## troubleshooting
+
+For a bootstrap with already defined ressources encrypted with SOPS, all manifests in the flux-system directory must exist. This includes the following files:
+
+- `gotk-components.yaml` (can be empty)
+- `gotk-sync.yaml` (has to be correct)
+- `kustomization.yaml` (with inline patch)
