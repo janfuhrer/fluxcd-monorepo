@@ -3,7 +3,7 @@ kind: Kustomization
 metadata:
   name: argocd
 spec:
-  path: ./infrastructure/clusters/prod/argocd
+  path: "./infrastructure/clusters/${cluster_name}/argocd"
   targetNamespace: argo-system
   prune: true
   interval: 5m0s

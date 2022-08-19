@@ -3,7 +3,7 @@ kind: Kustomization
 metadata:
   name: ingress-nginx
 spec:
-  path: ./infrastructure/clusters/prod/ingress-nginx
+  path: "./infrastructure/clusters/${cluster_name}/ingress-nginx"
   targetNamespace: ingress
   prune: true
   interval: 5m0s
