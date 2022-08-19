@@ -20,4 +20,53 @@ flux bootstrap git -s \
 
 ## Configure Mozilla SOPS
 
-tbd
+1. Create a age-key
+
+```bash
+age-keygen -o age.agekey
+```
+
+2. Create secret `sops-age-flux-global-prod` in the `flux-system` namespace
+
+```bash
+cat age.agekey |
+kubectl create secret generic sops-age-flux-global-prod \
+--namespace=flux-system \
+--from-file=age.agekey=/dev/stdin
+```
+
+3. Add decryption provider in the file `clusters/prod/flux-system/patch.yaml`
+
+```yaml
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: flux-system
+  namespace: flux-system
+spec:
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age-flux-global-prod
+```
+
+4. Create a SOPS config file
+
+```bash
+PUB_KEY=
+
+cat <<EOF > ./clusters/prod/.sops.yaml
+creation_rules:
+  - path_regex: .*.yaml
+    encrypted_regex: ^(data|stringData)$
+    age: ${PUB_KEY}
+EOF
+```
+
+5. Encrypt a file (example with cert-manager issuer)
+
+```bash
+echo -n ${PASSWORD} | kubectl create secret generic cluster-issuer-example-com-secret -n cert-manager --dry-run=client --from-file=api-token=/dev/stdin -o yaml > api-token-example-com.yaml
+
+sops -e -i api-token-example-com.yaml
+```

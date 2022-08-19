@@ -12,7 +12,7 @@ spec:
     name: flux-system
   dependsOn:
     - name: cert-manager
-  #decryption:
-  #  provider: sops
-  #  secretRef:
-  #    name: sops-gpg-flux-global-prod
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age-flux-global-prod

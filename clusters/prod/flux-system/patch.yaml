@@ -8,7 +8,7 @@ spec:
   postBuild:
     substitute:
       cluster_name: "prod"
-  #decryption:
-  #  provider: sops
-  #  secretRef:
-  #    name: sops-gpg-flux-global-prod
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age-flux-global-prod
