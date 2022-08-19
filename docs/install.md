@@ -20,7 +20,7 @@ flux bootstrap git -s \
 
 ## Configure Mozilla SOPS
 
-1. Install [sops](https://github.com/mozilla/sops#encrypting-using-azure-key-vault) & [age](https://github.com/FiloSottile/age)
+1. Install [sops](https://github.com/mozilla/sops) & [age](https://github.com/FiloSottile/age)
 
 2. Create an age-key
 
