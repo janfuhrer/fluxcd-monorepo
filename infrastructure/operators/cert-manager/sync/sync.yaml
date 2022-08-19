@@ -10,12 +10,3 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  healthChecks:
-    - apiVersion: helm.toolkit.fluxcd.io/v2beta1
-      kind: HelmRelease
-      name: cert-manager
-      namespace: cert-system
-    - apiVersion: source.toolkit.fluxcd.io/v1beta1
-      kind: HelmRepository
-      name: jetstack-charts
-      namespace: cert-system
