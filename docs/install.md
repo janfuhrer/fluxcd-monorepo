@@ -6,7 +6,7 @@
 ssh-keygen -t ed25519 -o -f ~/.ssh/id_ed25519_flux -C "flux-system"
 ```
 
-2. Download and set up [flux-cli](https://github.com/fluxcd/flux2/releases)
+2. Download the [flux-cli](https://github.com/fluxcd/flux2/releases)
 3. Set the right kubernetes-context and run the flux bootstrap command
 
 ```bash
@@ -20,13 +20,15 @@ flux bootstrap git -s \
 
 ## Configure Mozilla SOPS
 
-1. Create a age-key
+1. Install [sops](https://github.com/mozilla/sops#encrypting-using-azure-key-vault) & [age](https://github.com/FiloSottile/age)
+
+2. Create an age-key
 
 ```bash
 age-keygen -o age.agekey
 ```
 
-2. Create secret `sops-age-flux-global-prod` in the `flux-system` namespace
+3. Create secret `sops-age-flux-global-prod` in the `flux-system` namespace
 
 ```bash
 cat age.agekey |
@@ -35,7 +37,7 @@ kubectl create secret generic sops-age-flux-global-prod \
 --from-file=age.agekey=/dev/stdin
 ```
 
-3. Add decryption provider in the file `clusters/prod/flux-system/patch.yaml`
+4. Add decryption provider in the file `clusters/prod/flux-system/patch.yaml`
 
 ```yaml
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
@@ -50,7 +52,7 @@ spec:
       name: sops-age-flux-global-prod
 ```
 
-4. Create a SOPS config file
+5. Create a SOPS config file
 
 ```bash
 export PUB_KEY=
@@ -63,10 +65,14 @@ creation_rules:
 EOF
 ```
 
-5. Encrypt a file (example with cert-manager issuer)
+6. Encrypt a file (example with cert-manager issuer)
 
 ```bash
 echo -n ${PASSWORD} | kubectl create secret generic cluster-issuer-example-com-secret -n cert-manager --dry-run=client --from-file=api-token=/dev/stdin -o yaml > api-token-example-com.yaml
 
+# use sops with .sops.yaml config file
 sops -e -i api-token-example-com.yaml
+
+# use sops with parameters
+sops --age=${PUB_KEY} -e --encrypted-regex '^(data|stringData)$' -i api-token-example-com.yaml
 ```
