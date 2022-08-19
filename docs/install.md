@@ -53,7 +53,7 @@ spec:
 4. Create a SOPS config file
 
 ```bash
-PUB_KEY=
+export PUB_KEY=
 
 cat <<EOF > ./clusters/prod/.sops.yaml
 creation_rules:
